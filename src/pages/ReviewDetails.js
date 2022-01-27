@@ -1,21 +1,41 @@
 import React from 'react';
-import useFetch from '../hooks/useFetch'
+import { useQuery, gql } from "@apollo/client";
 import {useParams} from 'react-router-dom';
+
+const REVIEWS = gql`
+  query GetReviews($id: ID!){
+    review(id: $id){
+      data{
+        id,
+        attributes{
+          title,
+          body,
+          rating
+        }
+      }
+    }
+  }
+`
 
 function ReviewDetails() {
   const {id} = useParams();
-  const {data, error, loading} = useFetch(`http://localhost:1337/api/reviews/${id}`);
-
+  const {data, error, loading} = useQuery(REVIEWS, {
+    variables:{
+      id:id
+    }
+  });
+  
   if(loading) return <p>loading</p>
   if(error) return <p>{error}...</p>
 
+  // the line refrencing the data should be after loading=false, after the api stopped fetching
+  const deconstructedData = data.review.data.attributes;
   return (
-  <div>
-    <h1>{data.attributes.title}</h1>
-    <div className="rating">{data.attributes.rating}</div>
-        <h2>{data.attributes.title}</h2>
-        <small>Console list</small>
-        <p>{data.attributes.body}</p>
+  <div className="review-card">
+    <div className="rating">{deconstructedData.rating}</div>
+    <h2>{deconstructedData.title}</h2>
+    <small>Console list</small>
+    <p>{deconstructedData.body}</p>
   </div>);
 }
 
