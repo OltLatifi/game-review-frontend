@@ -22,12 +22,12 @@ function Header() {
 
   const deconstructedData = data.categories.data;
   return (
-  <div>
+  <div className="site-header">
     <a href="/"><h1>Game reviews</h1></a>
     <nav className="categories">
       <span>Filter reviews by game consoles</span>
       {deconstructedData.map(category => {return(
-        <a href={`/categories/${category.id}`} key={category.id}><h1>{category.attributes.name}</h1></a>
+        <a href={`/category/${category.id}`} key={category.id}><h1>{category.attributes.name}</h1></a>
       )})}
     </nav>
   </div>);

@@ -5,18 +5,25 @@ import { useQuery, gql } from "@apollo/client";
 
 
 const REVIEWS = gql`
-  query GetReviews{
-    reviews{
-      data{
-        id,
-        attributes{
-          title,
-          body,
-          rating
+query GetReviews{
+  reviews{
+    data{
+      id,
+      attributes{
+        title,
+        body,
+        rating,
+        categories{
+          data{
+            attributes{
+              name
+            }
+          }
         }
       }
     }
   }
+}
 `
 
 function Homepage() {
@@ -33,7 +40,13 @@ function Homepage() {
         <div key={review.id} className="review-card">
         <div className="rating">{review.attributes.rating}</div>
         <h2>{review.attributes.title}</h2>
-        <small>Console list</small>
+
+        {review.attributes.categories.data.map(review=>{
+            return(
+              <small>{review.attributes.name}</small>
+            )
+          })}
+        
         <p>{review.attributes.body.substring(0,200)}...</p>
         <Link to={`/details/${review.id}`}>Read more</Link>
       </div>

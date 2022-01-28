@@ -21,7 +21,7 @@ function App() {
       <Header />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route exact path="/" element={<Homepage />} />
           <Route path="/category/:id" element={<Category />} />
           <Route path="/details/:id" element={<ReviewDetails />} />
         </Routes>
